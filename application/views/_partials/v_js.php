@@ -17,7 +17,7 @@
     <script src="<?= base_url('assets/vendors/moment/datetime-moment.js') ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/vendors/toastr/toastr.js') ?>" type="text/javascript"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#tabel-responsif').DataTable({
                 pageLength: 25,
                 'sDom': 'R<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"rt>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>'
@@ -26,8 +26,8 @@
     </script>
     <script type="text/javascript">
         //semua halaman
-        $(document).ready(function(){
-            $('#logout-alert').click(function(){
+        $(document).ready(function() {
+            $('#logout-alert').click(function() {
                 Swal.fire({
                     title: 'Keluar dari Sistem',
                     text: 'Apakah Anda yakin ingin keluar dari sistem?',
@@ -47,12 +47,12 @@
         });
     </script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#tabel-user').DataTable({
                 pageLength: 25,
                 'sDom': 'R<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"rt>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
             });
-            $(".hapus-user").click(function(){
+            $(".hapus-user").click(function() {
                 var username = $(this).attr('id');
                 var namaTerpilih = $(this).closest("tr");
                 var namaUser = namaTerpilih.find("td:eq(1)").html();
@@ -74,8 +74,8 @@
         });
     </script>
     <script type="text/javascript">
-        $(document).ready(function(){
-            $(".hapus-pembayaran").click(function(){
+        $(document).ready(function() {
+            $(".hapus-pembayaran").click(function() {
                 var id_pembayaran = $(this).attr('id');
                 var invoiceTerpilih = $(this).closest("tr");
                 var namaPenghuni = invoiceTerpilih.find("td:eq(2)").html();
@@ -99,13 +99,13 @@
     </script>
     <script type="text/javascript">
         //daftar penghuni
-        $(document).ready(function(){
+        $(document).ready(function() {
             $.fn.dataTable.moment('D-M-YYYY');
             $('#tabel-penghuni').DataTable({
                 pageLength: 25,
                 'sDom': 'R<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"rt>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
             });
-            $(".hapus-penghuni").click(function(){
+            $(".hapus-penghuni").click(function() {
                 var id_penghuni = $(this).attr('id');
                 var namaTerpilih = $(this).closest("tr");
                 var namaPenghuni = namaTerpilih.find("td:eq(2)").html();
@@ -126,54 +126,56 @@
                 });
             });
         });
-        $(document).on("click", ".detail-penghuni", function(){
+        $(document).on("click", ".detail-penghuni", function() {
             var id_penghuni = $(this).attr("id");
             $.ajax({
                 url: "<?= base_url('get-detail-penghuni') ?>",
                 method: "POST",
-                data: {id_penghuni: id_penghuni},
+                data: {
+                    id_penghuni: id_penghuni
+                },
                 dataType: "json",
                 cache: false,
-                success: function(data){
+                success: function(data) {
                     Swal.fire({
                         width: 700,
                         html: `<div class="table-responsive">
                                     <table class="table table-bordered">
                                         <tr>
                                             <td width="30%"><label>No. Kamar</label></td>
-                                            <td width="70%">`+ data.no_kamar +`</td>
+                                            <td width="70%">` + data.no_kamar + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>Nama</label></td>
-                                            <td width="70%">`+ data.nama +`</td>
+                                            <td width="70%">` + data.nama + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>No. KTP</label></td>
-                                            <td width="70%">`+ data.no_ktp +`</td>
+                                            <td width="70%">` + data.nik + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>Alamat Asal</label></td>
-                                            <td width="70%">`+ data.alamat +`</td>
+                                            <td width="70%">` + data.alamat + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>No. Telp/HP</label></td>
-                                            <td width="70%">`+ data.no +`</td>
+                                            <td width="70%">` + data.telepon + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>Tanggal Huni</label></td>
-                                            <td width="70%">`+ data.tgl_masuk +` s/d `+ data.tgl_keluar +`</td>
+                                            <td width="70%">` + data.tgl_masuk + ` s/d ` + data.tgl_keluar + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>Jumlah Harus Dibayar</label></td>
-                                            <td width="70%"> Rp`+ data.biaya +`</td>
+                                            <td width="70%"> Rp. ` + data.biaya + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>Jumlah Telah Dibayar</label></td>
-                                            <td width="70%"> Rp`+ data.bayar +`</td>
+                                            <td width="70%"> Rp. ` + data.bayar + `</td>
                                         </tr>
                                         <tr>
                                             <td width="30%"><label>Sisa Piutang</label></td>
-                                            <td width="70%"> Rp`+ data.piutang +`</td>
+                                            <td width="70%"> Rp. ` + data.piutang + `</td>
                                         </tr>
                                     </table>
                                 </div>`
@@ -183,7 +185,7 @@
         });
     </script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             // Select 2
             $(".select2_kamar").select2({
                 placeholder: "Pilih Kamar Baru",
@@ -231,9 +233,10 @@
         });
     </script>
     <script type="text/javascript">
-        window.onload = function(){
+        window.onload = function() {
             <?php if (isset($pesan)) echo $pesan ?>
         }
     </script>
-</body>
-</html>
+    </body>
+
+    </html>

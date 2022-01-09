@@ -9,23 +9,23 @@
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
         $(function() {
-            $('#login-form').validate({
-                errorClass: "help-block",
-                rules: {
-                    username: {
-                        required: true
-                    },
-                    password: {
-                        required: true
-                    }
-                },
-                highlight: function(e) {
-                    $(e).closest(".form-group").addClass("has-error")
-                },
-                unhighlight: function(e) {
-                    $(e).closest(".form-group").removeClass("has-error")
-                },
-            });
+            // $('#login-form').validate({
+            //     errorClass: "help-block",
+            //     rules: {
+            //         username: {
+            //             required: true
+            //         },
+            //         password: {
+            //             required: true
+            //         }
+            //     },
+            //     highlight: function(e) {
+            //         $(e).closest(".form-group").addClass("has-error")
+            //     },
+            //     unhighlight: function(e) {
+            //         $(e).closest(".form-group").removeClass("has-error")
+            //     },
+            // });
         });
     </script>
     <script type="text/javascript">
@@ -85,14 +85,14 @@
         });
     </script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                    $(this).remove();
                 });
             }, 2000);
         });
     </script>
-</body>
+    </body>
 
-</html>
+    </html>
