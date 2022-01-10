@@ -8,52 +8,54 @@
                         </div>
                     </div>
                     <div class="ibox-body">
-                        <form class="form-horizontal" action="<?= base_url('aksi-tambah-pembayaran') ?>" method="post">
-                                <input type="hidden" name="id_penghuni" value="<?= $penghuni->id ?>">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">No. Kamar</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="no_kamar" placeholder="No. Kamar" value="<?= $penghuni->no_kamar ?>" readonly>
+                        <form class="form-horizontal" action="<?= base_url('tambah-pembayaran/' . $penghuni->id) ?>" method="post">
+                            <input type="hidden" name="id" value="<?= $penghuni->id ?>">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">No. Kamar</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="no_kamar" placeholder="No. Kamar" value="<?= $penghuni->no_kamar ?>" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Nama Lengkap</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="nama" value="<?= $penghuni->nama ?>" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">No. KTP</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" value="<?= $penghuni->nik ?>" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row transaksi">
+                                <label class="col-sm-3 col-form-label">Jumlah Pembayaran</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="number" name="bayar" placeholder="Masukkan Jumlah Pembayaran" max="1000000000" autocomplete="off" required readonly value="<?= $penghuni->harga; ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row transaksi" id="tgl_bayar">
+                                <label class="col-sm-3 col-form-label">Tanggal Berakhir Kost</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control <?= form_error('tgl_keluar') ? 'is-invalid' : ''; ?>" type="date" name="tgl_keluar" id="tgl_keluar" placeholder="Pilih Tanggal Transaksi" value="<?= form_error('tgl_keluar') ? set_value('tgl_keluar') : $penghuni->tgl_keluar; ?>" autocomplete="off">
+                                    <!-- <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span> -->
+                                    <div class="invalid-feedback">
+                                        <?= form_error('tgl_keluar'); ?>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Nama Lengkap</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="nama" value="<?= $penghuni->nama ?>" readonly>
-                                    </div>
+                            </div>
+                            <div class="form-group row transaksi">
+                                <label class="col-sm-3 col-form-label">Keterangan</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="ket" placeholder="Keterangan Pembayaran (Opsional)">
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">No. KTP</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="text" value="<?= $penghuni->no_ktp ?>" readonly>
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-sm-auto">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-danger" type="button" onclick="window.history.back()">Batal</button>
                                 </div>
-                                <div class="form-group row transaksi">
-                                    <label class="col-sm-3 col-form-label">Jumlah Pembayaran</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="number" name="bayar" placeholder="Masukkan Jumlah Pembayaran" max="1000000000" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row transaksi" id="tgl_bayar">
-                                    <label class="col-sm-3 col-form-label">Tanggal Transaksi</label>
-                                    <div class="col-sm-9 input-group date">
-                                        <input class="form-control" type="text" name="tgl_bayar" id="form_tgl_bayar" placeholder="Pilih Tanggal Transaksi" value="<?= date('d-m-Y') ?>" autocomplete="off">
-                                        <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row transaksi">
-                                    <label class="col-sm-3 col-form-label">Keterangan</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="ket" placeholder="Keterangan Pembayaran (Opsional)">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-9 ml-sm-auto">
-                                        <button class="btn btn-primary" type="submit">Submit</button>
-                                        <button class="btn btn-danger" type="button" onclick="window.history.back()">Batal</button>
-                                        <button class="btn btn-outline-default" type="reset" value="Reset">Reset</button>
-                                    </div>
-                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

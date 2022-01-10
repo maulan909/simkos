@@ -12,31 +12,27 @@
                                     <th class="text-center">No. Kamar</th>
                                     <th class="text-center">Nama</th>
                                     <th class="text-center">Tanggal Pembayaran</th>
-                                    <th class="text-center">Jumlah Harus Dibayar</th>
-                                    <th class="text-center">Jumlah Yang Sudah Dibayar</th>
+                                    <th class="text-center">Jumlah Pembayaran</th>
                                     <th class="text-center">Keterangan</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $no = 1; foreach ($pembayaran as $pembayaran){ ?>
-                                <tr>
-                                    <td class="text-center"><?= $no++ ?></td>
-                                    <td class="text-center"><?= $pembayaran->no_kamar ?></td>
-                                    <td><?= $pembayaran->nama ?></td>
-                                    <td class="text-center"><?= $pembayaran->tgl_bayar ?></td>
-                                    <td class="text-center"><?= 'Rp'.number_format($pembayaran->biaya, 0, ',', '.') ?></td>
-                                    <td class="text-center"><?= 'Rp'.number_format($pembayaran->bayar, 0, ',', '.') ?></td>
-                                    <td><?= $pembayaran->ket ?></td>
-                                    <td class="text-center">
-                                        <a class="btn btn-sm btn-info active edit-riwayat" href="<?= base_url('edit-pembayaran/'.$pembayaran->id_pembayaran) ?>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ubah Riwayat">
-                                            <span class="fa fa-pencil"></span>
-                                        </a>
-                                        <a class="btn btn-sm btn-danger active hapus-pembayaran" id="<?= $pembayaran->id_pembayaran ?>"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Hapus Riwayat">
-                                            <span class="fa fa-trash"></span>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <?php $no = 1;
+                                foreach ($pembayaran as $pembayaran) { ?>
+                                    <tr>
+                                        <td class="text-center"><?= $no++ ?></td>
+                                        <td class="text-center"><?= $pembayaran->no_kamar ?></td>
+                                        <td><?= $pembayaran->nama ?></td>
+                                        <td class="text-center"><?= date('d M Y', strtotime($pembayaran->tgl_bayar)) ?></td>
+                                        <td class="text-center"><?= 'Rp' . number_format($pembayaran->bayar, 0, ',', '.') ?></td>
+                                        <td><?= $pembayaran->ket ?></td>
+                                        <td class="text-center">
+                                            <a class="btn btn-sm btn-danger active hapus-pembayaran" id="<?= $pembayaran->id ?>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Hapus Riwayat">
+                                                <span class="fa fa-trash"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 <?php } ?>
                             </tbody>
                         </table>

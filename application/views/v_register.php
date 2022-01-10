@@ -41,6 +41,17 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="no_kamar">Pilih Kamar</label>
+                <select class="form-control <?= form_error('no_kamar') ? 'is-invalid' : ''; ?>" name="no_kamar" id="no_kamar">
+                    <?php foreach ($kamar as $k) : ?>
+                        <option value="<?= $k->no_kamar; ?>" <?= set_value('no_kamar') == $k->no_kamar ? 'selected' : ''; ?>>ukuran <?= $k->lantai; ?> (Rp.<?= number_format($k->harga, 0, ',', '.'); ?>)</option>
+                    <?php endforeach; ?>
+                </select>
+                <div class="invalid-feedback">
+                    <?= form_error('no_kamar'); ?>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="name">Full Name</label>
                 <div class="input-group-icon left">
                     <div class="input-icon"><i class="fa fa-user-circle-o"></i></div>
@@ -87,6 +98,7 @@
             <?php endif; ?>
             <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit">Register</button>
+                <a href="<?= base_url('login'); ?>" class="btn btn-link btn-block">Login</a>
             </div>
         </form>
     </div>

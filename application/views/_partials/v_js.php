@@ -91,7 +91,7 @@
                     cancelButtonText: 'Batal',
                 }).then((result) => {
                     if (result.value) {
-                        window.location.href = '<?= base_url("aksi-hapus-pembayaran/") ?>' + id_pembayaran;
+                        window.location.href = '<?= base_url("hapus-pembayaran/") ?>' + id_pembayaran;
                     }
                 });
             });
@@ -121,7 +121,7 @@
                 }).then((result) => {
                     if (result.value) {
                         //form.submit();
-                        window.location.href = '<?= base_url("aksi-hapus-penghuni/") ?>' + id_penghuni;
+                        window.location.href = '<?= base_url("hapus-penghuni/") ?>' + id_penghuni;
                     }
                 });
             });
@@ -137,6 +137,11 @@
                 dataType: "json",
                 cache: false,
                 success: function(data) {
+                    let date = new Date();
+                    let tagihan = date.getTime() > (Math.round(Date.parse(data.tgl_keluar) / (3 * 24 * 60 * 60 * 100))) ? 'Lunas' : 'Belum Terbayar ' + new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR'
+                    }).format(data.harga);
                     Swal.fire({
                         width: 700,
                         html: `<div class="table-responsive">
@@ -166,17 +171,14 @@
                                             <td width="70%">` + data.tgl_masuk + ` s/d ` + data.tgl_keluar + `</td>
                                         </tr>
                                         <tr>
-                                            <td width="30%"><label>Jumlah Harus Dibayar</label></td>
-                                            <td width="70%"> Rp. ` + data.biaya + `</td>
+                                            <td width="30%"><label>Status Pembayaran</label></td>
+                                            <td width="70%">` + tagihan + `</td>
                                         </tr>
-                                        <tr>
+                                        <tr>` +
+                            (tagihan === 'Lunas' ? `
                                             <td width="30%"><label>Jumlah Telah Dibayar</label></td>
-                                            <td width="70%"> Rp. ` + data.bayar + `</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="30%"><label>Sisa Piutang</label></td>
-                                            <td width="70%"> Rp. ` + data.piutang + `</td>
-                                        </tr>
+                                            <td width="70%"> Rp. ` + data.harga + `</td>` : ``) +
+                            `</tr>
                                     </table>
                                 </div>`
                     });
@@ -195,15 +197,15 @@
             $("#form_tgl_lahir").mask("99-99-9999", {
                 placeholder: "dd-mm-yyyy"
             });
-            $("#form_tgl_bayar").mask("99-99-9999", {
-                placeholder: "dd-mm-yyyy"
-            });
-            $("#tgl_masuk").mask("99-99-9999", {
-                placeholder: "dd-mm-yyyy"
-            });
-            $("#tgl_keluar").mask("99-99-9999", {
-                placeholder: "dd-mm-yyyy"
-            });
+            // $("#form_tgl_bayar").mask("99-99-9999", {
+            //     placeholder: "dd-mm-yyyy"
+            // });
+            // $("#tgl_masuk").mask("99-99-9999", {
+            //     placeholder: "dd-mm-yyyy"
+            // });
+            // $("#tgl_keluar").mask("99-99-9999", {
+            //     placeholder: "dd-mm-yyyy"
+            // });
             // Bootstrap datepicker
             $("#tgl_lahir .input-group.date").datepicker({
                 keyboardNavigation: false,

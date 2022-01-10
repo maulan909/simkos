@@ -35,6 +35,9 @@
                 case 'gagal_login':
                     echo '<div class="alert alert-danger gagal-login">Username dan password tidak cocok.</div>';
                     break;
+                case 'not_activated':
+                    echo '<div class="alert alert-danger">Akunmu belum diaktivasi, silahkan hubungi pemilik kost</div>';
+                    break;
                 case 'berhasil_logout':
                     echo '<div class="alert alert-success berhasil-logout">Berhasil keluar dari sistem.</div>';
                     break;
@@ -45,6 +48,7 @@
             ?>
             <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit">Login</button>
+                <a href="<?= base_url('register'); ?>" class="btn btn-link btn-block">Register</a>
             </div>
         </form>
     </div>

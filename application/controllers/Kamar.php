@@ -16,7 +16,7 @@ class Kamar extends CI_Controller
     {
         $data['judul_halaman'] = 'Daftar Kamar';
         $data['username'] = $this->session->userdata('username');
-        $data['kamar'] = $this->kamar->detail_kamar(['1' => '1'])->result();
+        $data['kamar'] = $this->kamar->detail_kamar()->result();
         $data['pesan'] = $this->session->flashdata('pesan');
 
         $this->load->view('_partials/v_head', $data);
@@ -32,9 +32,10 @@ class Kamar extends CI_Controller
 
     public function edit($no_kamar)
     {
+        is_admin();
         $data['judul_halaman'] = 'Edit Harga Kamar';
         $data['username'] = $this->session->userdata('username');
-        $data['kamar'] = $this->kamar->detail_kamar(['no_kamar' => $no_kamar])->row();
+        $data['kamar'] = $this->kamar->detail_kamar(['kamar.no_kamar' => $no_kamar])->row();
 
         if (!$data['kamar']) show_404();
 
@@ -51,6 +52,7 @@ class Kamar extends CI_Controller
 
     public function update()
     {
+        is_admin();
         $no_kamar = $this->input->post('no_kamar');
         $harga = $this->input->post('harga');
 

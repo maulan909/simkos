@@ -32,17 +32,24 @@ class Auth extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-        $admin = $this->user->cek_login($username, $password);
-        if ($admin->num_rows() > 0) {
-            $admin = $admin->row();
+        $user = $this->user->cek_login($username, $password);
+        if ($user->num_rows() > 0) {
+            $user = $user->row();
+            if ($user->is_active == 0) {
+                $this->session->set_flashdata('pesan', 'not_activated');
+                redirect(base_url('login'));
+            }
             $data_session = array(
-                'nama' => $admin->nama,
-                'username' => $admin->username,
+                'nama' => $user->nama,
+                'username' => $user->username,
                 'status' => 'login',
-                'role_id' => $admin->role_id
+                'role_id' => $user->role_id
             );
             $this->session->set_userdata($data_session);
             $this->session->set_flashdata('pesan', 'toastr.success("Selamat datang, Anda masuk sebagai ' . $username . '")');
+            if ($user->role_id == 2) {
+                return redirect('tagihan');
+            }
             redirect(base_url('dasbor'));
         } else {
             $this->session->set_flashdata('pesan', 'gagal_login');
@@ -73,6 +80,11 @@ class Auth extends CI_Controller
                     'min_length' => '{field} minimum 5 characters and maximum 50 characters',
                     'max_length' => '{field} minimum 5 characters and maximum 50 characters'
                 ]
+            ],
+            [
+                'field' => 'no_kamar',
+                'label' => 'Kamar',
+                'rules' => 'required|is_natural_no_zero|is_unique[penghuni.no_kamar]',
             ],
             [
                 'field' => 'confirm_password',
@@ -112,9 +124,20 @@ class Auth extends CI_Controller
                 'nik' => $this->input->post('nik'),
                 'telepon' => '62' . $this->input->post('telepon'),
                 'alamat' => $this->input->post('alamat'),
-                'role_id' => 2
+                'role_id' => 2,
+                'is_active' => 0
             ];
             $insert = $this->user->insert($post);
+            $userId = $this->db->insert_id();
+
+            $this->load->model('Penghuni_model', 'penghuni');
+
+            $this->penghuni->tambah_penghuni([
+                'no_kamar' => $this->input->post('no_kamar'),
+                'user_id' => $userId,
+                'tgl_masuk' => date('Y-m-d', time())
+            ]);
+
             if ($insert) {
                 $this->session->set_flashdata('message', 'Registrasi Berhasil');
                 $this->session->set_flashdata('type', 'success');
@@ -126,6 +149,8 @@ class Auth extends CI_Controller
         }
         $data['judul_halaman'] = 'Register';
         $data['pesan'] = $this->session->flashdata('pesan');
+        $this->load->model('Kamar_model', 'kamar');
+        $data['kamar'] = $this->kamar->getKamar('p.no_kamar IS NULL')->result();
 
         // if ($data['pesan'] == 'berhasil_logout' || $data['pesan'] == 'berhasil_ubah_pass') {
         //     $this->session->sess_destroy();

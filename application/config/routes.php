@@ -66,31 +66,32 @@ $route['aksi-edit-harga-kamar'] = 'Kamar/update';
 //User route
 $route['daftar-penghuni'] = 'User/index';
 $route['get-detail-penghuni'] = 'User/get_detail_user';
+$route['edit-penghuni/(:num)'] = 'User/edit_user/$1';
+$route['hapus-penghuni/(:num)'] = 'User/hapus_penghuni/$1';
+
+//Pembayaran route
+$route['tambah-pembayaran/(:num)'] = 'Pembayaran/tambah_pembayaran/$1';
+$route['riwayat-pembayaran'] = 'Pembayaran/index';
+$route['hapus-pembayaran/(:num)'] = 'Pembayaran/hapus_pembayaran/$1';
 
 $route['daftar-user'] = 'c_admin/daftar_user';
 $route['daftar-harga'] = 'c_admin/daftar_harga';
 $route['daftar-ekspenghuni'] = 'c_admin/daftar_ekspenghuni';
-$route['riwayat-pembayaran'] = 'c_admin/riwayat_pembayaran';
 $route['laporan-keuangan'] = 'c_admin/laporan_keuangan';
 
 $route['ubah-pass'] = 'c_admin/ubah_pass';
 $route['tambah-user'] = 'c_admin/tambah_user';
 $route['tambah-penghuni/(:num)'] = 'c_admin/tambah_penghuni/$1';
-$route['tambah-pembayaran/(:num)'] = 'c_admin/tambah_pembayaran/$1';
-$route['edit-penghuni/(:num)'] = 'c_admin/edit_penghuni/$1';
 $route['edit-pembayaran/(:num)'] = 'c_admin/edit_pembayaran/$1';
 
 $route['get-prodi'] = 'c_aksi/get_prodi';
 $route['get-kamar'] = 'c_aksi/get_kamar';
 $route['get-detail-kamar'] = 'c_aksi/get_detail_kamar';
 $route['aksi-tambah-penghuni'] = 'c_aksi/aksi_tambah_penghuni';
-$route['aksi-edit-penghuni'] = 'c_aksi/aksi_edit_penghuni';
-$route['aksi-hapus-penghuni/(:num)'] = 'c_aksi/aksi_hapus_penghuni/$1';
 $route['perpanjang/(:num)'] = 'c_aksi/perpanjang/$1';
 $route['eks-penghuni/(:num)'] = 'c_aksi/eks_penghuni/$1';
 $route['aksi-tambah-pembayaran'] = 'c_aksi/aksi_tambah_pembayaran';
 $route['aksi-edit-pembayaran'] = 'c_aksi/aksi_edit_pembayaran';
-$route['aksi-hapus-pembayaran/(:num)'] = 'c_aksi/aksi_hapus_pembayaran/$1';
 $route['aksi-ubah-pass'] = 'c_aksi/aksi_ubah_pass';
 $route['aksi-tambah-user'] = 'c_aksi/aksi_tambah_user';
 $route['aksi-hapus-user/(:any)'] = 'c_aksi/aksi_hapus_user/$1';

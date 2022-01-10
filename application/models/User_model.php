@@ -19,7 +19,7 @@ class User_model extends CI_Model
 
     public function get_user($where = null)
     {
-        $this->db->select('users.*, p.id as pid, p.no_kamar, p.tgl_masuk, p.tgl_keluar');
+        $this->db->select('users.*, p.id as pid, p.no_kamar, p.tgl_masuk, p.tgl_keluar, k.harga');
         $this->db->join('penghuni p', 'p.user_id = users.id', 'left');
         $this->db->join('kamar k', 'k.no_kamar = p.no_kamar', 'left');
         if ($where) {
@@ -27,5 +27,15 @@ class User_model extends CI_Model
         }
         $this->db->order_by('k.no_kamar');
         return $this->db->get($this->_table);
+    }
+
+    public function update_penghuni($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update($this->_table, $data);
+    }
+    public function hapus($id)
+    {
+        return $this->db->delete($this->_table, ['id' => $id]);
     }
 }

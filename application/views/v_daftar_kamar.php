@@ -12,31 +12,39 @@
                                     <th class="text-center">Luas Kamar</th>
                                     <th class="text-center">No. Kamar</th>
                                     <th class="text-center">Harga per Bulan</th>
-                                    <th class="text-center">Harga per Tahun</th>
                                     <th class="text-center">Status Kamar</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $no = 1; foreach ($kamar as $kamar){ ?>
-                                <tr>
-                                    <td class="text-center"><?= $no++ ?></td>
-                                    <td class="text-center"><?= $kamar->lantai ?> m</td>
-                                    <td class="text-center"><?= $kamar->no_kamar ?></td>
-                                    <td class="text-center"><?= 'Rp'.number_format($kamar->harga, 2, ',', '.') ?></td>
-                                    <td class="text-center"><?= 'Rp'.number_format(12*$kamar->harga, 2, ',', '.') ?></td>
-                                    <td class="text-center">
-                                        <?= $kamar->jml_penghuni == '1' ? '<span class="badge badge-danger">Sudah Berpenghuni</span>' : '<span class="badge badge-default">Belum Berpenghuni</span>' ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="btn btn-sm btn-success active edit-huni" href="<?= base_url('tambah-penghuni/'.$kamar->no_kamar) ?>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tambah Penghuni">
-                                            <span class="fa fa-plus"></span>
-                                        </a>
-                                        <a class="btn btn-sm btn-info active edit-huni" href="<?= base_url('edit-harga-kamar/'.$kamar->no_kamar) ?>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ubah Harga">
-                                            <span class="fa fa-pencil"></span>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <?php $no = 1;
+                                foreach ($kamar as $kamar) { ?>
+                                    <tr>
+                                        <td class="text-center"><?= $no++ ?></td>
+                                        <td class="text-center"><?= $kamar->lantai ?> m</td>
+                                        <td class="text-center"><?= $kamar->no_kamar ?></td>
+                                        <td class="text-center"><?= 'Rp' . number_format($kamar->harga, 2, ',', '.') ?></td>
+                                        <td class="text-center">
+                                            <?php if ($kamar->pid != null) : ?>
+                                                <?php if ($kamar->is_active == 1) : ?>
+                                                    <span class="badge badge-danger">Sudah Berpenghuni</span>
+                                                <?php else : ?>
+                                                    <span class="badge badge-info">Booked</span>
+                                                <?php endif; ?>
+                                            <?php else : ?>
+                                                <span class="badge badge-default">Belum Berpenghuni</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <!-- <a class="btn btn-sm btn-success active edit-huni" href="<?php //base_url('tambah-penghuni/' . $kamar->no_kamar) 
+                                                                                                            ?>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tambah Penghuni">
+                                                <span class="fa fa-plus"></span>
+                                            </a> -->
+                                            <a class="btn btn-sm btn-info active edit-huni" href="<?= base_url('edit-harga-kamar/' . $kamar->no_kamar) ?>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ubah Harga">
+                                                <span class="fa fa-pencil"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 <?php } ?>
                             </tbody>
                         </table>

@@ -9,16 +9,14 @@ function is_login()
 {
     $ci = get_instance();
     if (!$ci->session->userdata('username')) {
-        return false;
+        return redirect('login');
     }
-    return true;
 }
 
 function is_admin()
 {
     $ci = get_instance();
     if ($ci->session->userdata('role_id') != 1) {
-        return false;
+        return redirect('tagihan');
     }
-    return true;
 }
