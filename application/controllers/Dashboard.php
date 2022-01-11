@@ -7,9 +7,14 @@ class Dashboard extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        is_login();
-        is_admin();
+        if (!is_login()) {
+            return redirect('login');
+        }
+        if (!is_admin()) {
+            return redirect('tagihan-penghuni');
+        }
         date_default_timezone_set("Asia/Bangkok");
+        checker_tagihan();
     }
 
     function dasbor()

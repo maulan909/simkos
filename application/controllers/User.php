@@ -6,11 +6,12 @@ class User extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') != 'login') {
+        if (!is_login()) {
             redirect(base_url('login'));
         }
         date_default_timezone_set("Asia/Bangkok");
         $this->load->model('User_model', 'user');
+        checker_tagihan();
     }
     public function index()
     {
@@ -48,24 +49,43 @@ class User extends CI_Controller
         $this->load->view('_partials/v_js_form');
     }
 
-    public function assign_user($no_kamar = null)
+    // public function assign_user($no_kamar = null)
+    // {
+    //     $data['judul_halaman'] = 'Assign Akun Penghuni';
+    //     $data['username'] = $this->session->userdata('username');
+    //     $data['kamar'] = $this->m_data->detail_kamar(array('no_kamar' => $no_kamar))->row();
+
+    //     if (!$data['kamar']) show_404();
+
+    //     else if ($data['kamar']->jml_penghuni == '1') {
+    //         $this->session->set_flashdata('pesan', 'toastr.warning("Kamar ' . $no_kamar . ' sudah terisi, silakan pilih kamar lain")');
+    //         redirect(base_url('daftar-kamar'));
+    //     }
+
+    //     $this->load->view('_partials/v_head', $data);
+    //     $this->load->view('_partials/v_header');
+    //     $this->load->view('_partials/v_sidebar', $data);
+    //     $this->load->view('_partials/v_breadcrump', $data);
+    //     $this->load->view('v_tambah_penghuni', $data); //page content
+    //     $this->load->view('_partials/v_footer');
+    //     // $this->load->view('_partials/v_theme-config');
+    //     $this->load->view('_partials/v_preloader');
+    //     $this->load->view('_partials/v_js');
+    // }
+
+    public function tagihan()
     {
-        $data['judul_halaman'] = 'Assign Akun Penghuni';
+        $data['judul_halaman'] = 'Tagihan Penghuni';
+        $data['pesan'] = $this->session->flashdata('pesan');
         $data['username'] = $this->session->userdata('username');
-        $data['kamar'] = $this->m_data->detail_kamar(array('no_kamar' => $no_kamar))->row();
-
-        if (!$data['kamar']) show_404();
-
-        else if ($data['kamar']->jml_penghuni == '1') {
-            $this->session->set_flashdata('pesan', 'toastr.warning("Kamar ' . $no_kamar . ' sudah terisi, silakan pilih kamar lain")');
-            redirect(base_url('daftar-kamar'));
-        }
-
+        $data['penghuni'] = $this->user->get_user(['username' => $data['username']])->result();
+        // var_dump($data['penghuni']);
+        // die;
         $this->load->view('_partials/v_head', $data);
         $this->load->view('_partials/v_header');
         $this->load->view('_partials/v_sidebar', $data);
         $this->load->view('_partials/v_breadcrump', $data);
-        $this->load->view('v_tambah_penghuni', $data); //page content
+        $this->load->view('v_tagihan_penghuni', $data); //page content
         $this->load->view('_partials/v_footer');
         // $this->load->view('_partials/v_theme-config');
         $this->load->view('_partials/v_preloader');
@@ -162,6 +182,61 @@ class User extends CI_Controller
         // $this->load->view('_partials/v_theme-config');
         $this->load->view('_partials/v_preloader');
         $this->load->view('_partials/v_js');
+    }
+
+    public function ubah_pass()
+    {
+        if (!is_login()) return redirect('login');
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules([
+            [
+                'field' => 'password',
+                'label' => 'Password Lama',
+                'rules' => 'required'
+            ],
+            [
+                'field' => 'password_baru',
+                'label' => 'Password Baru',
+                'rules' => 'required|min_length[8]|max_length[50]',
+                'errors' => [
+                    'min_length' => '{field} minimum 8 characters and maximum 50 characters',
+                    'max_length' => '{field} minimum 8 characters and maximum 50 characters',
+                ]
+            ],
+            [
+                'field' => 'konfirmasi_password_baru',
+                'label' => 'Konfirmasi Password Baru',
+                'rules' => 'matches[password_baru]',
+            ]
+        ]);
+        $data['user'] = $this->user->get_user(['username' => $this->session->userdata('username')])->row();
+        if ($this->form_validation->run()) {
+            $username = $this->session->userdata('username');
+            $password = $this->input->post('password');
+            $password_baru = sha1($this->input->post('password_baru'));
+
+            if ($data['user']->password != sha1($password)) {
+                $this->session->set_flashdata('message', 'Password lama salah');
+                $this->session->set_flashdata('type', 'danger');
+                return redirect('ubah-pass');
+            }
+
+            if ($this->user->update_penghuni($data['user']->id, ['password' => $password_baru])) {
+                $this->session->set_flashdata('pesan', 'berhasil_ubah_pass');
+                return redirect(base_url('login'));
+            } else {
+                $this->session->set_flashdata('pesan', 'gagal_ubah_pass');
+            }
+            return redirect('ubah-pass');
+        }
+        $data['judul_halaman'] = 'Ubah Password';
+        $data['pesan'] = $this->session->flashdata('pesan');
+
+        $this->load->view('_partials/v_head_form', $data);
+        $this->load->view('v_ubah_pass');
+        $this->load->view('_partials/v_preloader');
+        $this->load->view('_partials/v_js_form');
     }
 
     public function hapus_penghuni($id = null)

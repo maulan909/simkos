@@ -9,9 +9,9 @@ class Penghuni_model extends CI_Model
     {
         return $this->db->insert($this->_table, $data);
     }
-    public function update($id, $data)
+    public function update($user_id, $data)
     {
-        $this->db->where('user_id', $id);
+        $this->db->where('user_id', $user_id);
         return $this->db->update($this->_table, $data);
     }
 }

@@ -8,16 +8,18 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->model('User_model', 'user');
+        checker_tagihan();
     }
 
     function login()
     {
+        // if (is_login()) return redirect('dasbor');
         $data['judul_halaman'] = 'Login';
         $data['pesan'] = $this->session->flashdata('pesan');
 
         if ($data['pesan'] == 'berhasil_logout' or $data['pesan'] == 'berhasil_ubah_pass') {
             $this->session->sess_destroy();
-        } else if ($this->session->userdata('status') == 'login') {
+        } else if (is_login()) {
             redirect(base_url('dasbor'));
         }
 
@@ -29,6 +31,7 @@ class Auth extends CI_Controller
 
     function verify()
     {
+        if (is_login()) return redirect('dasbor');
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
@@ -48,7 +51,7 @@ class Auth extends CI_Controller
             $this->session->set_userdata($data_session);
             $this->session->set_flashdata('pesan', 'toastr.success("Selamat datang, Anda masuk sebagai ' . $username . '")');
             if ($user->role_id == 2) {
-                return redirect('tagihan');
+                return redirect('tagihan-penghuni');
             }
             redirect(base_url('dasbor'));
         } else {
@@ -59,6 +62,7 @@ class Auth extends CI_Controller
 
     function register()
     {
+        if (is_login()) return redirect('dasbor');
         $this->load->helper(array('form', 'url'));
 
         $this->load->library('form_validation');
@@ -77,8 +81,8 @@ class Auth extends CI_Controller
                 'label' => 'Password',
                 'rules' => 'required|min_length[8]|max_length[50]',
                 'errors' => [
-                    'min_length' => '{field} minimum 5 characters and maximum 50 characters',
-                    'max_length' => '{field} minimum 5 characters and maximum 50 characters'
+                    'min_length' => '{field} minimum 8 characters and maximum 50 characters',
+                    'max_length' => '{field} minimum 8 characters and maximum 50 characters'
                 ]
             ],
             [
@@ -152,11 +156,6 @@ class Auth extends CI_Controller
         $this->load->model('Kamar_model', 'kamar');
         $data['kamar'] = $this->kamar->getKamar('p.no_kamar IS NULL')->result();
 
-        // if ($data['pesan'] == 'berhasil_logout' || $data['pesan'] == 'berhasil_ubah_pass') {
-        //     $this->session->sess_destroy();
-        // } else if ($this->session->userdata('status') == 'login') {
-        //     redirect(base_url('dasbor'));
-        // }
         $this->load->view('_partials/v_head_form', $data);
         $this->load->view('v_register');
         $this->load->view('_partials/v_preloader');

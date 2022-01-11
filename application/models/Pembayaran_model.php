@@ -7,9 +7,10 @@ class Pembayaran_model extends CI_Model
 
     public function detail_pembayaran($where = null)
     {
-        $this->db->select('keuangan.*, u.nama, p.no_kamar');
+        $this->db->select('keuangan.*, u.nama, p.no_kamar, p.tgl_keluar, k.harga');
         $this->db->join('users u', 'u.id = keuangan.user_id', 'left');
         $this->db->join('penghuni p', 'p.user_id = u.id', 'left');
+        $this->db->join('kamar k', 'k.no_kamar = p.no_kamar', 'left');
         if ($where) $this->db->where($where);
         $this->db->order_by('keuangan.id', 'DESC');
         return $this->db->get($this->_table);

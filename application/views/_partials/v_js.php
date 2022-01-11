@@ -17,10 +17,25 @@
     <script src="<?= base_url('assets/vendors/moment/datetime-moment.js') ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/vendors/toastr/toastr.js') ?>" type="text/javascript"></script>
     <script type="text/javascript">
+        let searchHash = location.hash.substr(1),
+            searchKamar = searchHash.substr(searchHash.indexOf('kamar='))
+            .split('&')[0]
+            .split('=')[1];
         $(document).ready(function() {
             $('#tabel-responsif').DataTable({
                 pageLength: 25,
-                'sDom': 'R<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"rt>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>'
+                'sDom': 'R<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"rt>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                initComplete: function() {
+                    this
+                        .api()
+                        .column(1)
+                        .search(searchKamar)
+                        .draw()
+                }
+                // "oSearch": {
+                //     "sSearch": searchString
+                // }
+
             });
         });
     </script>
@@ -99,6 +114,11 @@
     </script>
     <script type="text/javascript">
         //daftar penghuni
+        function diff_date(tgl_akhir) {
+            let t_akhir = Date.parse(tgl_akhir);
+            return Math.ceil(Math.floor((Date.now() - t_akhir) / (1000 * 60 * 60 * 24)) / 30);
+            // return Math.floor(((Date.UTC(t_today.getFullYear(), t_today.getMonth(), t_today.getDate())) - (Date.UTC(t_akhir.getFullYear(), t_akhir.getMonth(), t_akhir.getDate()))) / (1000 * 60 * 60 * 24));
+        }
         $(document).ready(function() {
             $.fn.dataTable.moment('D-M-YYYY');
             $('#tabel-penghuni').DataTable({
@@ -137,11 +157,10 @@
                 dataType: "json",
                 cache: false,
                 success: function(data) {
-                    let date = new Date();
-                    let tagihan = date.getTime() > (Math.round(Date.parse(data.tgl_keluar) / (3 * 24 * 60 * 60 * 100))) ? 'Lunas' : 'Belum Terbayar ' + new Intl.NumberFormat('id-ID', {
+                    let tagihan = diff_date(data.tgl_keluar) <= 0 ? 'Lunas' : 'Belum Terbayar ' + new Intl.NumberFormat('id-ID', {
                         style: 'currency',
                         currency: 'IDR'
-                    }).format(data.harga);
+                    }).format(data.harga * diff_date(data.tgl_keluar));
                     Swal.fire({
                         width: 700,
                         html: `<div class="table-responsive">
@@ -177,7 +196,10 @@
                                         <tr>` +
                             (tagihan === 'Lunas' ? `
                                             <td width="30%"><label>Jumlah Telah Dibayar</label></td>
-                                            <td width="70%"> Rp. ` + data.harga + `</td>` : ``) +
+                                            <td width="70%"> ` + new Intl.NumberFormat('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR'
+                            }).format(data.harga * diff_date(data.tgl_keluar)) + `</td>` : ``) +
                             `</tr>
                                     </table>
                                 </div>`

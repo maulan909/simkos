@@ -68,18 +68,20 @@ $route['daftar-penghuni'] = 'User/index';
 $route['get-detail-penghuni'] = 'User/get_detail_user';
 $route['edit-penghuni/(:num)'] = 'User/edit_user/$1';
 $route['hapus-penghuni/(:num)'] = 'User/hapus_penghuni/$1';
+$route['ubah-pass'] = 'User/ubah_pass';
+$route['tagihan-penghuni'] = 'User/tagihan';
 
 //Pembayaran route
-$route['tambah-pembayaran/(:num)'] = 'Pembayaran/tambah_pembayaran/$1';
 $route['riwayat-pembayaran'] = 'Pembayaran/index';
+$route['tambah-pembayaran/(:num)'] = 'Pembayaran/tambah_pembayaran/$1';
 $route['hapus-pembayaran/(:num)'] = 'Pembayaran/hapus_pembayaran/$1';
+$route['list-tagihan'] = 'Pembayaran/list_tagihan';
 
 $route['daftar-user'] = 'c_admin/daftar_user';
 $route['daftar-harga'] = 'c_admin/daftar_harga';
 $route['daftar-ekspenghuni'] = 'c_admin/daftar_ekspenghuni';
 $route['laporan-keuangan'] = 'c_admin/laporan_keuangan';
 
-$route['ubah-pass'] = 'c_admin/ubah_pass';
 $route['tambah-user'] = 'c_admin/tambah_user';
 $route['tambah-penghuni/(:num)'] = 'c_admin/tambah_penghuni/$1';
 $route['edit-pembayaran/(:num)'] = 'c_admin/edit_pembayaran/$1';

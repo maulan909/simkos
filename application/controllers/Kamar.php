@@ -6,11 +6,15 @@ class Kamar extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') != 'login') {
-            redirect(base_url('login'));
+        if (!is_login()) {
+            return redirect('login');
+        }
+        if (!is_admin()) {
+            return redirect('tagihan-penghuni');
         }
         date_default_timezone_set("Asia/Bangkok");
         $this->load->model('Kamar_model', 'kamar');
+        checker_tagihan();
     }
     public function index()
     {
