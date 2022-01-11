@@ -73,25 +73,6 @@ class User extends CI_Controller
     //     $this->load->view('_partials/v_js');
     // }
 
-    public function tagihan()
-    {
-        $data['judul_halaman'] = 'Tagihan Penghuni';
-        $data['pesan'] = $this->session->flashdata('pesan');
-        $data['username'] = $this->session->userdata('username');
-        $data['penghuni'] = $this->user->get_user(['username' => $data['username']])->result();
-        // var_dump($data['penghuni']);
-        // die;
-        $this->load->view('_partials/v_head', $data);
-        $this->load->view('_partials/v_header');
-        $this->load->view('_partials/v_sidebar', $data);
-        $this->load->view('_partials/v_breadcrump', $data);
-        $this->load->view('v_tagihan_penghuni', $data); //page content
-        $this->load->view('_partials/v_footer');
-        // $this->load->view('_partials/v_theme-config');
-        $this->load->view('_partials/v_preloader');
-        $this->load->view('_partials/v_js');
-    }
-
     public function edit_user($id = null)
     {
 

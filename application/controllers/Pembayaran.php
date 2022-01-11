@@ -9,9 +9,9 @@ class Pembayaran extends CI_Controller
         if (!is_login()) {
             return redirect('login');
         }
-        if (!is_admin()) {
-            return redirect('tagihan-penghuni');
-        }
+        // if (!is_admin()) {
+        //     return redirect('tagihan-penghuni');
+        // }
         date_default_timezone_set("Asia/Bangkok");
         $this->load->model('Pembayaran_model', 'pembayaran');
         checker_tagihan();
@@ -49,6 +49,26 @@ class Pembayaran extends CI_Controller
         // $this->load->view('_partials/v_theme-config');
         $this->load->view('_partials/v_preloader');
         $this->load->view('_partials/v_js', $data);
+    }
+    public function tagihan()
+    {
+        $this->load->model('User_model', 'user');
+        $data['judul_halaman'] = 'Tagihan Penghuni';
+        $data['pesan'] = $this->session->flashdata('pesan');
+        $data['username'] = $this->session->userdata('username');
+        $penghuni = $this->user->get_user(['username' => $data['username']])->row();
+        $data['pembayaran'] = $this->pembayaran->detail_pembayaran(['status' => 0, 'keuangan.user_id' => $penghuni->id])->result();
+        // var_dump($data['penghuni']);
+        // die;
+        $this->load->view('_partials/v_head', $data);
+        $this->load->view('_partials/v_header');
+        $this->load->view('_partials/v_sidebar', $data);
+        $this->load->view('_partials/v_breadcrump', $data);
+        $this->load->view('v_tagihan_penghuni', $data); //page content
+        $this->load->view('_partials/v_footer');
+        // $this->load->view('_partials/v_theme-config');
+        $this->load->view('_partials/v_preloader');
+        $this->load->view('_partials/v_js');
     }
 
     public function tambah_pembayaran($id = null)
